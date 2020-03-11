@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         textViewResult = findViewById(R.id.text_view_result);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://loan.test/")
+                .baseUrl("http://192.168.254.1/loan/public/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

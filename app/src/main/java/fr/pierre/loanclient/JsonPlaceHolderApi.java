@@ -13,20 +13,20 @@ import retrofit2.http.POST;
 
 public interface JsonPlaceHolderApi {
 
-    @GET("api/materials/get")
+    @GET("materials/get")
     Call<List<Post>> getPosts();
 
-    @POST("api/materials/create")
+    @POST("materials/create")
     Call<Post> createPost(@Body Post post);
 
     @FormUrlEncoded
-    @POST("api/materials/create")
+    @POST("materials/create")
     Call<Post> createPost(
             @Field("libelle") String libelle
     );
 
     @FormUrlEncoded
-    @POST("api/materials/create")
+    @POST("materials/create")
     Call<Post> createPost(@FieldMap Map<String, String> fields);
 
 }
