@@ -1,5 +1,6 @@
 package fr.pierre.loanclient;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,22 +12,18 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-public interface JsonPlaceHolderApi {
+public interface materialsApi {
 
     @GET("materials/get")
-    Call<List<Post>> getPosts();
+    Call<List<Material>> getMaterials();
 
     @POST("materials/create")
-    Call<Post> createPost(@Body Post post);
+    Call<Material> createMaterial(@Body Material material);
 
+    @POST("materials/create")
     @FormUrlEncoded
-    @POST("materials/create")
-    Call<Post> createPost(
+    Call<Material> createMaterial(
             @Field("libelle") String libelle
     );
-
-    @FormUrlEncoded
-    @POST("materials/create")
-    Call<Post> createPost(@FieldMap Map<String, String> fields);
 
 }

@@ -2,13 +2,14 @@ package fr.pierre.loanclient;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Post {
+public class Material {
+
     private Integer id;
 
     @SerializedName("libelle")
     private String libelle;
 
-    public Post(String libelle) {
+    public Material(String libelle) {
         this.libelle = libelle;
     }
 

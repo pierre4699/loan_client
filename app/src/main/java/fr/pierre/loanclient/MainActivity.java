@@ -14,11 +14,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.POST;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView textViewResult;
-    private JsonPlaceHolderApi JsonPlaceHolderApi;
+    private materialsApi materialsApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,64 +33,63 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        materialsApi materialsApi = retrofit.create(materialsApi.class);
 
-        createPost();
+        createMaterial();
 
-        Call<List<Post>> call = jsonPlaceHolderApi.getPosts();
+        Call<List<Material>> call = materialsApi.getMaterials();
 
-        call.enqueue(new Callback<List<Post>>() {
+        call.enqueue(new Callback<List<Material>>() {
             @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+            public void onResponse(Call<List<Material>> call, Response<List<Material>> response) {
                 if(!response.isSuccessful()){
                     textViewResult.setText("Code: " + response.code());
                     return;
                 }
 
-                List<Post> posts = response.body();
-                for (Post post: posts){
+                List<Material> Materials = response.body();
+                for (Material Material: Materials){
                     String content = "";
-                    content += "ID: " + post.getId() + "\n";
-                    content += "Libelle: " + post.getLibelle() + "\n\n";
+                    content += "ID: " + Material.getId() + "\n";
+                    content += "Libelle: " + Material.getLibelle() + "\n\n";
                     textViewResult.append(content);
 
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
+            public void onFailure(Call<List<Material>> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
             }
         });
     }
-    private void createPost(){
-        Post post = new Post("Test");
+    private void createMaterial(){
 
-        Map<String, String> fields = new HashMap<>();
-        fields.put("libelle","Test");
+        textViewResult = findViewById(R.id.text_view_result);
+        Material material = new Material("Test");
 
-        Call<Post> call = JsonPlaceHolderApi.createPost(fields);
+        Call<Material> call = materialsApi.createMaterial(material);
 
-        call.enqueue(new Callback<Post>() {
+        call.enqueue(new Callback<Material>() {
             @Override
-            public void onResponse(Call<Post> call, Response<Post> response) {
+            public void onResponse(Call<Material> call, Response<Material> response) {
                 if(!response.isSuccessful()){
                     textViewResult.setText("Code: " + response.code());
                     return;
                 }
 
-                Post postResponse = response.body();
+                Material materialResponse = response.body();
 
                 String content = "";
                 content += "Code: " + response.code() + "\n";
-                content += "ID: " + postResponse.getId() + "\n";
-                content += "Libelle: " + postResponse.getLibelle() + "\n\n";
+                content += "ID: " + materialResponse.getId() + "\n";
+                content += "Libelle: " + materialResponse.getLibelle() + "\n\n";
 
                 textViewResult.setText(content);
             }
 
             @Override
-            public void onFailure(Call<Post> call, Throwable t) {
+            public void onFailure(Call<Material> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
             }
         });
