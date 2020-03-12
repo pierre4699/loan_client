@@ -7,19 +7,36 @@
     tools:context=".MainActivity"
     android:padding="8dp">
 
+    <EditText
+        android:id="@+id/materialAdd"
+        android:layout_height="wrap_content"
+        android:hint="Nom du materiel"
+        android:inputType="textPersonName"
+        android:layout_width="fill_parent">
+    </EditText>
+    <Button
+        android:id="@+id/ButtonSendFeedback"
+        android:layout_height="wrap_content"
+        android:text="Ajouter"
+        android:onClick="postRequest"
+        android:layout_width="fill_parent"
+        android:translationY="100dp">
+    </Button>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
     <TextView
         android:id="@+id/text_view_result"
+        android:translationY="200dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

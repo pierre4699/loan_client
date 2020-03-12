@@ -10,6 +10,7 @@ public class Material {
     private String libelle;
 
     public Material(String libelle) {
+
         this.libelle = libelle;
     }
 

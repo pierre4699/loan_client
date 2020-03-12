@@ -3,6 +3,8 @@ package fr.pierre.loanclient;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -19,13 +21,16 @@ import retrofit2.http.POST;
 public class MainActivity extends AppCompatActivity {
 
     private TextView textViewResult;
-    private materialsApi materialsApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listMaterials();
+    }
+
+    public void listMaterials(){
         textViewResult = findViewById(R.id.text_view_result);
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -35,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         materialsApi materialsApi = retrofit.create(materialsApi.class);
 
-        createMaterial();
 
         Call<List<Material>> call = materialsApi.getMaterials();
 
@@ -53,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
                     content += "ID: " + Material.getId() + "\n";
                     content += "Libelle: " + Material.getLibelle() + "\n\n";
                     textViewResult.append(content);
+/*                    final int id_del = Material.getId();
+                    final Button button = findViewById(R.id.button_id);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            deleteMaterial(id_del);
+                        }
+                    });*/
 
                 }
             }
@@ -63,12 +74,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void createMaterial(){
 
-        textViewResult = findViewById(R.id.text_view_result);
-        Material material = new Material("Test");
+    public void createMaterial(String libelle){
 
-        Call<Material> call = materialsApi.createMaterial(material);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.254.1/loan/public/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        materialsApi materialsApi = retrofit.create(materialsApi.class);
+
+        Call<Material> call = materialsApi.createMaterial(libelle);
 
         call.enqueue(new Callback<Material>() {
             @Override
@@ -78,14 +94,6 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                Material materialResponse = response.body();
-
-                String content = "";
-                content += "Code: " + response.code() + "\n";
-                content += "ID: " + materialResponse.getId() + "\n";
-                content += "Libelle: " + materialResponse.getLibelle() + "\n\n";
-
-                textViewResult.setText(content);
             }
 
             @Override
@@ -93,5 +101,37 @@ public class MainActivity extends AppCompatActivity {
                 textViewResult.setText(t.getMessage());
             }
         });
+    }
+
+    public void deleteMaterial(int id){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.254.1/loan/public/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        materialsApi materialsApi = retrofit.create(materialsApi.class);
+
+        Call<Void> call = materialsApi.deleteMaterial(id);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                textViewResult.setText(t.getMessage());
+            }
+        });
+    }
+
+    public void postRequest(View view) {
+
+        TextView materialAdd = findViewById(R.id.materialAdd);
+        String libelle = materialAdd.getText().toString();
+
+        createMaterial(libelle);
     }
 }
